@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Monitor merchant risk signals with explainable SQL checks.">
+    <title>Merchant Portfolio Monitor</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="/static/app.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Merchant Portfolio Monitor home">
+        <span class="brand-mark" aria-hidden="true">MP</span>
+        <span>
+          <strong>Merchant Risk</strong>
+          <small>Analyst workspace</small>
+        </span>
+      </a>
+      <div class="status-group">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span>System ready</span>
+        <span class="divider" aria-hidden="true"></span>
+        <span>Synthetic dataset</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div>
+          <h1>Merchant Portfolio Monitor</h1>
+          <p class="hero-copy">Portfolio risk monitoring and analyst triage across synthetic merchant activity.</p>
+        </div>
+        <div class="as-of">
+          <span>As of</span>
+          <strong>24 September 2026</strong>
+          <small>UTC, fixed for reproducibility</small>
+        </div>
+      </section>
+
+      <section class="metric-grid" aria-label="Portfolio summary preview">
+        <article class="metric-card">
+          <span>Merchants</span>
+          <strong>200</strong>
+          <small>Monitored accounts</small>
+        </article>
+        <article class="metric-card">
+          <span>Transactions</span>
+          <strong>200,000</strong>
+          <small>Seeded activity</small>
+        </article>
+        <article class="metric-card accent-card">
+          <span>Watchlist</span>
+          <strong>9</strong>
+          <small>Flagged merchants</small>
+        </article>
+        <article class="metric-card">
+          <span>Query library</span>
+          <strong id="query-library-total">12</strong>
+          <small>Available documented checks</small>
+        </article>
+      </section>
+
+      <section class="workspace-grid">
+        <aside class="panel query-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Detection library</p>
+              <h2>Queries</h2>
+            </div>
+            <span class="count-badge" id="query-count">Loading...</span>
+          </div>
+          <label class="search-label" for="query-search">
+            <span class="visually-hidden">Filter queries</span>
+            <input id="query-search" type="search" placeholder="Filter checks...">
+          </label>
+          <div class="query-list" id="query-list" aria-label="Available query list">
+            <div class="remaining-note">Loading query library...</div>
+          </div>
+          <div class="severity-legend" aria-label="Severity triage legend">
+            <strong>Severity for triage</strong>
+            <div><span class="severity-badge high">High</span><p>Review first due to immediate loss or abuse exposure.</p></div>
+            <div><span class="severity-badge medium">Medium</span><p>Review after high-severity cases for material risk change.</p></div>
+            <div><span class="severity-badge low">Low</span><p>Monitor or review when capacity permits.</p></div>
+          </div>
+        </aside>
+
+        <div class="main-column">
+          <section class="panel sql-panel">
+            <div class="panel-heading compact">
+              <div>
+                <p class="eyebrow">Selected check</p>
+                <h2 id="selected-title">Loading query...</h2>
+              </div>
+              <span class="mode-badge">Live SQL</span>
+            </div>
+            <div class="query-context">
+              <div><span>Flags</span><p id="selected-flags">Loading description...</p></div>
+              <div><span>Status</span><p id="query-status">Waiting for the query API.</p></div>
+            </div>
+            <pre class="sql-code" aria-label="Selected SQL query"><code>-- Loading SQL...</code></pre>
+          </section>
+
+          <section class="panel results-panel">
+            <div class="panel-heading compact">
+              <div>
+                <p class="eyebrow">Evidence</p>
+                <h2>Query results</h2>
+              </div>
+              <span class="count-badge" id="result-count">0 rows</span>
+            </div>
+            <div class="results-layout">
+              <div id="results-container" class="empty-state">
+                <span class="empty-glyph" aria-hidden="true">{ }</span>
+                <strong>Loading results</strong>
+                <p>The selected query is running against the read-only portfolio database.</p>
+              </div>
+              <aside class="investigation-panel" aria-label="Investigation guidance">
+                <div>
+                  <span>Why it matters</span>
+                  <p id="why-it-matters">Loading risk context...</p>
+                </div>
+                <div>
+                  <span>Next step</span>
+                  <p id="next-step">Loading investigation guidance...</p>
+                </div>
+              </aside>
+            </div>
+          </section>
+        </div>
+
+        <aside class="side-column">
+          <section class="panel watchlist-panel">
+            <div class="panel-heading compact">
+              <div>
+                <p class="eyebrow">Review priority</p>
+                <h2>Watchlist</h2>
+              </div>
+              <span class="count-badge" id="watchlist-count">Loading...</span>
+            </div>
+            <div id="watchlist-container" class="watchlist-loading">
+              Calculating weighted query flags...
+            </div>
+            <p class="panel-note">Score is the sum of configured weights for every fired query. Select a row for evidence.</p>
+          </section>
+
+          <section class="panel chart-panel">
+            <div class="panel-heading compact">
+              <div>
+                <p class="eyebrow">Signal trend</p>
+                <h2>Watchlist scores</h2>
+              </div>
+              <span class="mode-badge">Inline SVG</span>
+            </div>
+            <div id="score-chart" class="score-chart-loading">Loading score distribution...</div>
+          </section>
+        </aside>
+      </section>
+
+      <section class="panel custom-panel">
+        <div class="panel-heading compact">
+          <div>
+            <p class="eyebrow">Controlled analysis</p>
+            <h2>Custom SQL</h2>
+          </div>
+          <span class="mode-badge">Read-only</span>
+        </div>
+        <div class="custom-layout">
+          <label for="custom-sql">Read-only database query</label>
+          <textarea id="custom-sql" rows="4" placeholder="SELECT merchant_id, merchant_name FROM merchants ORDER BY merchant_id LIMIT 20"></textarea>
+          <button id="run-custom-sql" type="button" disabled>Run query</button>
+        </div>
+        <p class="panel-note" id="custom-sql-status">One SELECT or WITH statement only. Read-only, external access disabled, 500-row maximum, and a 2.5-second timeout.</p>
+        <div id="custom-results-area" class="custom-results-area" hidden>
+          <div class="custom-results-heading">
+            <strong>Custom query results</strong>
+            <span class="count-badge" id="custom-result-count">0 rows</span>
+          </div>
+          <div id="custom-results" class="results-content custom-results-content"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>Merchant Portfolio Monitor</span>
+      <span>Synthetic data only</span>
+    </footer>
+  </body>
+</html>

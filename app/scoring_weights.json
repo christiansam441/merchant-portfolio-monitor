@@ -1,0 +1,14 @@
+{
+  "below_review_limit": 20,
+  "card_testing_burst": 30,
+  "chargeback_spike": 30,
+  "decline_rate_outliers": 20,
+  "dormant_suddenly_active": 30,
+  "portfolio_summary": 0,
+  "refund_abuse": 30,
+  "shared_bank_account": 20,
+  "shared_merchant_attributes": 20,
+  "ticket_size_jump": 20,
+  "volume_above_declared": 30,
+  "volume_concentration": 0
+}
